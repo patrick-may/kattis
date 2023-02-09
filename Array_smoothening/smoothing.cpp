@@ -6,7 +6,6 @@ int main() {
     cin >> n >> k;
     // double hash approach?
     map<int, int> freq_map;
-    map<int, int> num_occurances;
 
     for(size_t i = 0; i < n; ++i) {
         int num;
@@ -15,16 +14,24 @@ int main() {
         if (freq_map.count(num)){
             freq_map[num]+=1;
         }
-
         else {
             freq_map[num] = 1;
         }
-        // thought: double hash, with second map counting the number of times a certain frequency occurs
-        // then loop through K at the end taking slices off the top of these indicies until done
-        int occurances = freq_map[num]
-        if (num_occurances.count(occurances)){
-            if occurances > 
+    }
+
+    int overall_max = freq_map.rend()->second;
+    //cout << overall_max << "\n";
+    for(auto it = freq_map.rbegin(); it != freq_map.rend(); it++){
+        cout << it->first << " " << it->second << "\n";
+        k -= it->second;
+        
+        if (k < 0){
+            break;
         }
+        overall_max = it->;
+    }
+    if (k > 0){
+        overall_max = 0;
     }
     printf("%i\n", overall_max); // printf is faster ig
     return 0;
