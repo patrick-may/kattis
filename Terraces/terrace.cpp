@@ -59,7 +59,7 @@ int island_add(vector<vector<int>>& garden, pair<int, int> loc, set<pair<int,int
         y = working_space.second;
         visited.insert(working_space);
         same_elevation.insert(working_space);
-        cout << "on location " << x << " " << y << "\n";
+        //cout << "on location " << x << " " << y << "\n";
 
         vector<int> neighbors = get_adj(garden, working_space);
 
@@ -75,7 +75,7 @@ int island_add(vector<vector<int>>& garden, pair<int, int> loc, set<pair<int,int
             cout << i.first << " " << i.second << "\n";
         }*/
         for (int i = 0; i < 4; ++i){
-            cout << neighbors[i] << " " << elevation << "\n";
+            //cout << neighbors[i] << " " << elevation << "\n";
             if (neighbors[i] < elevation){
                 exit = true;
                 break;
@@ -87,11 +87,11 @@ int island_add(vector<vector<int>>& garden, pair<int, int> loc, set<pair<int,int
                     to_visit.push_back(pair<int,int>(x , y-1));
                     //cout << "north added " << x << " " << y -1<< "\n";
                 }
-                else if (i == 1 && same_elevation.count(pair<int,int>(x, y + 1)) == 0 && y < cols - 1){
+                else if (i == 1 && same_elevation.count(pair<int,int>(x, y + 1)) == 0 && y < cols ){
                     to_visit.push_back(pair<int,int>(x, y + 1));
                     //cout << "south added " << x  << " " << y+1 << "\n";
                 }
-                else if (i == 2 && same_elevation.count(pair<int,int>(x + 1, y)) == 0 && x < rows - 1){
+                else if (i == 2 && same_elevation.count(pair<int,int>(x + 1, y)) == 0 && x < rows ){
                     to_visit.push_back(pair<int,int>(x + 1, y));
                     //cout << "east added " << x +1 << " " << y << "\n";
                 }
@@ -106,8 +106,9 @@ int island_add(vector<vector<int>>& garden, pair<int, int> loc, set<pair<int,int
         
         
     }
-    cout << "completed! island has no drainage and is of size" << same_elevation.size() << "\n";
-    return (exit) ? same_elevation.size() : 0;
+    cout << "for loc " << loc.first << " " << loc.second << "\n";
+    cout << "we are returing " << ((exit) ? 0 : same_elevation.size()) << "\n";
+    return (exit) ? 0 : same_elevation.size();
     
 }
 int main(){
@@ -150,7 +151,7 @@ int main(){
 
             // simple case: singleton pool. value is less than all neighboring cells
             if (curr_level < n && curr_level < s && curr_level < e && curr_level < w){
-                ++soln;
+                //++soln;
             }
 
             // second case will involve finding the "islands" and their bordering values
