@@ -1,81 +1,96 @@
 #include <bits/stdc++.h>
 
+#define pb push_back
+#define pf push_front
 using namespace std;
 
-int traverse_island(vector<vector<int>>& garden, pair<int,int> loc, set<pair<int,int>>& visited){
-    vector<int> neighbors;
-    // nort == 0
-    // south == 1
-    // each == 2
-    // wesh == 3
-    set<pair<int,int>> same_elevation;
-    
-    int rows = garden.size();
-    int cols = garden[0].size();
-    int x = loc.first;
-    int y = loc.second;
-    if (x == 0){
-        neighbors[0] = 1000;
-    }
-    else{
-        neighbors[0] = garden[x - 1][y];
-    }
-    if (y == 0) {
-        neighbors[3] = 1000;
-    }
-    else {
-        neighbors[3] = garden[x][y-1];
-    }
-    if (x == rows - 1){
-        neighbors[1] = 1000;
-    }
-    else {
-        neighbors[1] = garden[x + 1][y];
-    }
-    if (y == cols - 1){
-        neighbors[2] = 1000;
-    }
-    else {
-        neighbors[2] = garden[x][y + 1];
-    }
-    return neighbors;
+vector<int> adj(vector<vector<int>>& garden, pair<int,int> loc){
+    vector<int> soln(4);
+    //north
+    soln[0] = garden[loc.first - 1][loc.second];
+    //east
+    soln[1] = garden[loc.first][loc.second + 1];
+    //south
+    soln[2] = garden[loc.first + 1][loc.second];
+    //west
+    soln[3] = garden[loc.first][loc.second - 1];
+    return soln;
 }
 
-int island_add(vector<vector<int>>& garden, pair<int, int> loc, set<pair<int,int>>& visited){
-    // seek out larger than singleton spots
-    // return how many points to add
-    // add all the points to our visited set so we don't revisit island later
-    int visited = 1; // we start having been in one spot
-    int elevation = garden[loc.first][loc.second];
-    vector<int> first_neighbors = get_adj(garden, loc);
-    for (int adj: first_neighbors){
-        if (adj < elevation){ // so the pool drains somewhere
-            return 0; 
+int visit(vector<vector<int>>& garden, pair<int,int> loc, set<pair<int,int>>& visited){
+    bool debug = false;
+    bool drain = false;
+    int soln = 0;
+    // establish a deque to traverse pockets of the same elevation
+    deque<pair<int,int>> to_visit;
+    int elev = garden[loc.first][loc.second];
+    to_visit.pf(loc);
+    while (to_visit.size() > 0) {
+        pair<int,int> next = to_visit.front(); to_visit.pop_front();
+        if (visited.count(next)){
+            continue;
         }
-        if (adj == elevation and visited.count()){
+        // every new terrace square we visit makes our solution larger
+        
+        ++soln;
+        if(debug){
+            cout << "on loc" << next.first << " " << next.second << "\n";
+        }
+        
+        vector<int> neighs = adj(garden, next);
+        for (int i = 0; i < 4; ++i){
+            // if a drainage was found, then we return 0 no matter what
+            if (neighs[i] < elev){
+                drain = true;
+            } 
+            // the following ifs are just a workaround to add the north, east, south, or west neighoring cell
+            // if it matches the current elevation
+            if (neighs[i] == elev && i == 0){
+                to_visit.pb(pair<int,int>(next.first - 1, next.second));
+            }
+            else if (neighs[i] == elev && i == 1){
+                to_visit.pb(pair<int,int>(next.first, next.second + 1));
+            }
+            else if (neighs[i] == elev && i == 2){
+                to_visit.pb(pair<int,int>(next.first + 1, next.second));
+            }
+            else if (neighs[i] == elev && i == 3){
+                to_visit.pb(pair<int,int>(next.first, next.second - 1));
+            }
+        }
+        // VERY IMPORTANT! add the specific space to a set so that we remember
+        // that we have already visited it
+        visited.insert(next);
 
-        }
     }
-
-
-
+    if (debug){
+        cout << "returning " << (drain? 0 : soln) << "\n";
+    }
+    return drain? 0 : soln;
 }
+
 int main(){
-    bool debug = true;
+    bool debug = false;
     int cols, rows;
     vector<vector<int>> garden;
     set<pair<int,int>> visited;
     int soln = 0;
 
-    // gather input
+    // gather input, with padding rows and cols of value 1000 (higher than any terrace level)
     cin >> cols >> rows;
-    for (int i = 0; i < rows; ++i){
-        vector<int> curr_row(cols);
-        for (int j = 0; j < cols; ++j) {
+    vector<int> border(cols+2, 1000);
+    garden.pb(border);
+    for (int i = 1; i < rows+1; ++i){
+        vector<int> curr_row(cols+2);
+        
+        curr_row[0] = 1000; curr_row[cols + 1] = 1000;
+        for (int j = 1; j < cols+1; ++j) {
             cin >> curr_row[j];
         }
-        garden.push_back(curr_row);
+        
+        garden.pb(curr_row);
     }
+    garden.pb(border);
 
     if (debug){
         for(auto i: garden){
@@ -86,29 +101,15 @@ int main(){
         }
     }
 
-    for(int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            if (visited.count(pair<int,int>(i, j))){
+    // visit every spot in the garden
+    for(int i = 1; i < rows+1; ++i) {
+        for (int j = 1; j < cols+1; ++j) {
+            pair<int,int> curr_spot(i,j);
+            // have we already visited this spot?
+            if (visited.count(curr_spot)){
                 continue;
             }
-            int curr_level = garden[i][j];
-            // ugly long if statements to find values of adjacent cells
-            vector<int> neighbors = get_adj(garden, pair<int,int>(i, j));
-            int n, s, w, e;
-            n = neighbors[0]; s = neighbors[1]; w = neighbors[2]; e = neighbors[3];
-            cout << n << " " << s << " " << w  << " " << e << "\n";
-
-            // simple case: singleton pool. value is less than all neighboring cells
-            if (curr_level < n && curr_level < s && curr_level < e && curr_level < w){
-                ++soln;
-            }
-
-            // second case will involve finding the "islands" and their bordering values
-            else if (curr_level == n || curr_level == s || curr_level == e || curr_level == w){
-                //cout << "rut rough shaggy" << "\n";
-            }
-            // remember islands we have visited before at te end of each iteration
-            visited.insert(pair<int,int>(i,j));
+            soln += visit(garden, curr_spot, visited);
         }
         
     }
