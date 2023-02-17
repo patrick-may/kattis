@@ -1,3 +1,4 @@
 **/debug
 **/Cargo*
 **/target
+*.out
