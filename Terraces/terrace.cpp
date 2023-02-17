@@ -1,3 +1,7 @@
+// this implementation got bogged down by dealing with if something is contained within the border
+// go look at `terrace2.cpp` for the actual solution!
+
+
 #include <bits/stdc++.h>
 
 using namespace std;

@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
+// Patrick May
+// Terraces (raaaaaa)
 
+#include <bits/stdc++.h>
 #define pb push_back
 #define pf push_front
 using namespace std;
@@ -17,6 +19,7 @@ vector<int> adj(vector<vector<int>>& garden, pair<int,int> loc){
     return soln;
 }
 
+// visit all attached spaces of the same elevation based on current value loc
 int visit(vector<vector<int>>& garden, pair<int,int> loc, set<pair<int,int>>& visited){
     bool debug = false;
     bool drain = false;
@@ -27,11 +30,12 @@ int visit(vector<vector<int>>& garden, pair<int,int> loc, set<pair<int,int>>& vi
     to_visit.pf(loc);
     while (to_visit.size() > 0) {
         pair<int,int> next = to_visit.front(); to_visit.pop_front();
+        // if we have already visited a square, remove it from queue, don't count it
         if (visited.count(next)){
             continue;
         }
+
         // every new terrace square we visit makes our solution larger
-        
         ++soln;
         if(debug){
             cout << "on loc" << next.first << " " << next.second << "\n";
@@ -105,7 +109,7 @@ int main(){
     for(int i = 1; i < rows+1; ++i) {
         for (int j = 1; j < cols+1; ++j) {
             pair<int,int> curr_spot(i,j);
-            // have we already visited this spot?
+            // have we already visited this spot (we could have as visit can spindle outwards)
             if (visited.count(curr_spot)){
                 continue;
             }
