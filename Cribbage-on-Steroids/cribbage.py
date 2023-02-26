@@ -13,7 +13,7 @@ def count_15s(n):
         point_list.extend([worth[card]]*freq)
     #print(point_list)
 
-    # cache the call (free dynamic prog?!)
+    # cache the call (free dynamic prog 😎)
     @lru_cache(maxsize=None)
     def recur(sublist, target):
         local_sum = 0
