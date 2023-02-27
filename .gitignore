@@ -2,3 +2,4 @@
 **/Cargo*
 **/target
 *.out
+*.vscode
