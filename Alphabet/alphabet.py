@@ -1,21 +1,3 @@
-
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-"""
-def simple(s):
-    found = 1
-    after = alphabet[alphabet.find(s[0])+1:]
-
-    for let in s[1:]:
-        if let in after:
-            found += 1
-            after = after[after.find(let)+1:]
-        else:
-            return 26 - found
-
-    return 26 - found
-"""
-
 from functools import lru_cache
 # small case size means brute force could work here...
 case = input()
