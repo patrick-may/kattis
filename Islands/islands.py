@@ -20,6 +20,7 @@ def islands(planet):
                 if working_spot == 'C':
                     break # nothing to do with a cloud here
                 if working_spot == 'L':
+                    pass
 
 
 rows, cols  = map(int, input().split())
