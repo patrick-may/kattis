@@ -42,7 +42,3 @@ while response != "ACCESS GRANTED":
             idx += 1
             result = gettime(response)
             break
-    
-        
-    
-    
