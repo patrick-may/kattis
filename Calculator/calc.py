@@ -1,5 +1,5 @@
 # gotta love eval! big W for python
 from sys import stdin
 
-for line in stdin:
-    print(f"{eval(line):.2f}")
+for l in stdin:
+    print(f"{eval(l):.2f}")
