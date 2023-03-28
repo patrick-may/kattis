@@ -4,34 +4,29 @@ def naive_sum(n):
         total += sum([int(j) for j in str(i)])
     return total
 
+def digsum(n):
+    soln, mult = 0, 1
+    diglist = list(map(int, str(n)))
+    pos = len(diglist) - 1 # start at end of number
 
-def digsum(n, first):
-    n = int(n)
-    if n < 10 and first:
-        return sum(range(n+1))
-    elif n < 10:
-        return 45
+    while pos >= 0: # traverse entire number from smallest digit to max
+        # account for all different digit sum options
+        soln += sum(diglist[:pos]) * diglist[pos] * mult 
+        soln += diglist[pos] * (diglist[pos] - 1) // 2 * mult
+        soln += 45 * (mult // 10) * (len(diglist) - pos - 1) * diglist[pos]
+        # update position and multiplier
+        pos -= 1
+        mult *= 10
     
-    leading, trailing = int(str(n)[0]), str(n)[1:]
-    below = digsum(trailing, False)
-    total = 0
+    return soln
 
-    if first:
-        for i in range(leading):
-            total += i + below
-        total += leading
-    else:
-        total += 45 + 10*below
-
-    return total
-    
 def solve():
+    
     start, end = map(int, input().split())
-    s = digsum(start, True)
-    e = digsum(end, True)
-    print(s,e,)
-    print(naive_sum(start), naive_sum(end),)
-
+    s = digsum(start)
+    e = digsum(end + 1)
+    print(e-s)
+    
 cases = int(input())
 for _ in range(cases):
     solve()
