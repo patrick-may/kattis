@@ -20,9 +20,11 @@ def solve(n1, op, n2, ans):
         res = convert(ans, b)
         if first == -1 or second == -1 or res == -1:
             continue
+
         expr = str(first) + " " + op + " " + str(second)
         if eval(expr) == res:
             soln += bases[b-1] 
+            
     print(soln if len(soln) else "invalid")
 
 
