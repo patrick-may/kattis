@@ -11,9 +11,13 @@ def digsum(n):
 
     while pos >= 0: # traverse entire number from smallest digit to max
         # account for all different digit sum options
+        #print(diglist[pos])
         soln += sum(diglist[:pos]) * diglist[pos] * mult 
+        #print("a",sum(diglist[:pos]) * diglist[pos] * mult)
         soln += diglist[pos] * (diglist[pos] - 1) // 2 * mult
+        #print("b", diglist[pos] * (diglist[pos] - 1) // 2 * mult)
         soln += 45 * (mult // 10) * (len(diglist) - pos - 1) * diglist[pos]
+        #print("c", 45 * (mult // 10) * (len(diglist) - pos - 1) * diglist[pos])
         # update position and multiplier
         pos -= 1
         mult *= 10
