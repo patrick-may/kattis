@@ -7,7 +7,7 @@ typedef struct teque {
 
     void pf(int a) {
         h1.push_front(a);
-        if (h1.size() > h2.size()) {
+        if (h1.size() > h2.size() + 1) {
             h2.push_front(h1.back());
             h1.pop_back();
         }
@@ -20,17 +20,11 @@ typedef struct teque {
         }
     }
     void pm(int a) {
-        if (h1.size() <= h2.size()) {
-            h1.push_back(a);
-        }
-        else {
-            h2.push_front(a);
-        }
-        /*h2.push_front(a);
-        while (h2.size() > h1.size()) {
+        h2.push_front(a);
+        if (h2.size() > h1.size()) {
             h1.push_back(h2.front());
             h2.pop_front();
-        }*/
+        }
     }
     int get(int idx) {
         if (idx < h1.size()) {
@@ -40,8 +34,12 @@ typedef struct teque {
     }
 
     void print() {
-        for (int i = 0; i < h1.size() + h2.size(); ++i){
+        for (int i = 0; i < h1.size(); ++i){
             cout << i << " ";
+        }
+        cout << "  ";
+        for (int i = 0; i < h2.size(); ++i) {
+            cout << i + h1.size() << " ";
         }
         cout << "\n";
         for (int i: h1) {
