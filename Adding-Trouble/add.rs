@@ -5,7 +5,7 @@ fn main() {
     let mut buffer = String::new();
     io::stdin()
         .read_line(&mut buffer)
-        .expect("Couldn't read from stdin");
+    .expect("Couldn't read from stdin");
   
     let mut iter = buffer.split_whitespace();
     let x: i32 = iter.next().unwrap().parse().unwrap();
