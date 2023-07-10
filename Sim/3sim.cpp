@@ -17,7 +17,9 @@ void tc() {
         else if (c == '[') {
             preflag = true;
             // prepend existing f into the beginning of b
-            b.insert(b.begin(), f.begin(), f.end());
+            //b.resize(b.size() + f.size());
+            f.insert(f.end(), b.begin(), b.end());
+            b = f;
             f.clear();
             continue;
         }
