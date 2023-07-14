@@ -1,0 +1,10 @@
+8
+TYPEOF a
+TYPEOF b
+DECLARE a int
+TYPEOF a
+TYPEOF b
+DECLARE b float
+TYPEOF a
+TYPEOF b
+
