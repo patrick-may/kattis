@@ -2,8 +2,8 @@ from sys import stdin
 
 
 def tc(n, m):
-    jack = set([int(input()) for _ in range(n)])
-    jill = set([int(input()) for _ in range(m)])
+    jack = set([int(stdin.readline()) for _ in range(n)])
+    jill = set([int(stdin.readline()) for _ in range(m)])
     print(len(jack.intersection(jill)))
 
 
