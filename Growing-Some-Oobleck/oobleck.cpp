@@ -77,6 +77,77 @@ bool overlap(Circle& c1, Circle& c2) {
     return comb <= raddist;
 }
 
+vector<Circle> merges(vector<Circle>& oobs) {
+    // lookup of all intersects
+    map<Circle, vector<Circle>> to_merge;
+    for (int i = 0; i < oobs.size(); ++i) {
+        Circle c1 = oobs[i];
+        for (int j = i + 1; j < oobs.size(); ++j) {
+            Circle c2 = oobs[j];
+            if (overlap(c1, c2)) {
+                to_merge[c1].push_back(c2);
+                to_merge[c2].push_back(c1);
+            }
+        }
+    }
+
+    if (debug) {
+        for (auto p : to_merge) {
+            cout << "KEY: ";
+            p.first.print();
+            cout << "\n\t";
+            for (auto v : p.second) {
+                cout << "\t";
+                v.print();
+                cout << "\n";
+            }
+        }
+    }
+
+    vector<Circle> updatedOobs;
+    // add non-merging ooblecks
+    for (Circle c : oobs) {
+        if (to_merge.count(c) == 0) {
+            updatedOobs.push_back(c);
+        }
+    }
+
+    while (!to_merge.empty()) {
+        Circle key = to_merge.begin()->first;
+
+        set<Circle> currmerge;
+        currmerge.insert(key);
+
+        vector<Circle> inserts = to_merge.begin()->second;
+        while (!inserts.empty()) {
+            Circle top = inserts[0];
+
+            if (currmerge.count(top) == 0) {
+                for (auto elem : to_merge[top]) {
+                    inserts.push_back(elem);
+                }
+            }
+
+            currmerge.insert(top);
+            inserts.erase(inserts.begin());
+        }
+
+        if (debug) {
+            cout << "CURRENT MERGE\n";
+            for (auto elem : currmerge) {
+                elem.print();
+            }
+        }
+
+        for (Circle c : currmerge) {
+            to_merge.erase(c);
+        }
+        Circle merged = ooblection(currmerge);
+        updatedOobs.push_back(merged);
+    }
+
+    return updatedOobs;
+}
 int main() {
     int ct;
     cin >> ct;
@@ -99,11 +170,9 @@ int main() {
     int time = 0;
     while (oobs.size() > 1) {
         // grow all ooblecks if didn't merge prior
-        if (grow) {
-            ++time;
-            for (int i = 0; i < oobs.size(); ++i) {
-                oobs[i].grow();
-            }
+        ++time;
+        for (int i = 0; i < oobs.size(); ++i) {
+            oobs[i].grow();
         }
 
         // debug purposes
@@ -113,86 +182,7 @@ int main() {
             }
         }
 
-        // find intersections
-        map<Circle, vector<Circle>> to_merge;
-        for (int i = 0; i < oobs.size(); ++i) {
-            Circle c1 = oobs[i];
-            for (int j = i + 1; j < oobs.size(); ++j) {
-                Circle c2 = oobs[j];
-                if (overlap(c1, c2)) {
-                    to_merge[c1].push_back(c2);
-                    to_merge[c2].push_back(c1);
-                }
-            }
-        }
-
-        if (debug) {
-            for (auto p : to_merge) {
-                cout << "KEY: ";
-                p.first.print();
-                cout << "\n\t";
-                for (auto v : p.second) {
-                    cout << "\t";
-                    v.print();
-                    cout << "\n";
-                }
-            }
-        }
-
-        if (to_merge.size() > 0) {
-            grow = false;
-        } else {
-            grow = true;
-            continue;
-        }
-
-        vector<Circle> updatedOobs;
-
-        for (Circle c : oobs) {
-            if (to_merge.count(c) == 0) {
-                updatedOobs.push_back(c);
-            }
-        }
-
-        set<Circle> done;
-        for (auto p : to_merge) {
-            if (done.count(p.first)) {
-                continue;
-            }
-            set<Circle> currmerge;
-            currmerge.insert(p.first);
-
-            vector<Circle> inserts = p.second;
-            while (!inserts.empty()) {
-                Circle top = inserts[0];
-
-                if (currmerge.count(top) == 0) {
-                    for (auto elem : to_merge[top]) {
-                        inserts.push_back(elem);
-                    }
-                }
-
-                currmerge.insert(top);
-                inserts.erase(inserts.begin());
-            }
-
-            if (debug) {
-                cout << "CURRENT MERGE\n";
-                for (auto elem : currmerge) {
-                    elem.print();
-                }
-            }
-
-            for (auto elem : currmerge) {
-                done.insert(elem);
-            }
-
-            Circle merged = ooblection(currmerge);
-            updatedOobs.push_back(merged);
-        }
-
-        oobs = updatedOobs;
-        // cout << "TIME: " << time << "\n";
+        oobs = merges(oobs);
     }
 
     cout << fixed;
