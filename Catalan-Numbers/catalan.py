@@ -10,13 +10,11 @@ def fact(n):
     return factorial(n)
 
 
-catalans = [0] * 5001
-for n in range(5001):
-    cat = fact(2 * n) // (fact(n + 1) * fact(n))
-    catalans[n] = cat
+def catalan(n):
+    return fact(2 * n) // (fact(n + 1) * fact(n))
 
 
 stdin.readline()
 
 for line in stdin:
-    print(catalans[int(line.strip())])
+    print(catalan(int(line.strip())))
