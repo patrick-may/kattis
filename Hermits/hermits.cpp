@@ -41,7 +41,7 @@ int main() {
     for (int i = 1; i <= n; ++i) {
         long long currpop = pops[i];
         for (auto neigh : intersects[i]) {
-            currpop += neigh;
+            currpop += pops[neigh];
         }
         if (currpop < minpop) {
             idx = i;
