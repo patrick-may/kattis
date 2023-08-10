@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-long long fact(int n){
+typedef ll long long;
+
+long long fact(ll n){
     return (n == 1 || n == 0)? 1 : n * fact(n-1);
 }
 
-long long binomial(int n, int k){
+long long binomial(ll n, ll k){
     if (k > n || n <= 0 || k <= 0){
         return 0;
     }
@@ -14,13 +15,13 @@ long long binomial(int n, int k){
 
 int main(){
     bool debug = false;
-    map<int, int> mem;
+    map<ll, ll> mem;
     long long soln = 0;
-    int cases, divisor;
+    ll cases, divisor;
 
     cin >> cases >> divisor;
     for (int i = 0; i < cases; ++i) {
-        int a;
+        ll a;
         cin >> a;
         ++mem[a/divisor];
     }
