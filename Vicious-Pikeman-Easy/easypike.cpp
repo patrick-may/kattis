@@ -11,24 +11,26 @@ vector<int> lengths(int start, int a, int b, int c, int N) {
     }
     return soln;
 }
+
 int main() {
     // we can just brute force this, yeah?
-    int N, T;
+    long long N, T;
     cin >> N >> T;
     int a, b, c, t0;
     cin >> a >> b >> c >> t0;
     vector<int> speeds = lengths(t0, a, b, c, N);
 
     sort(speeds.begin(), speeds.end());
-    int completed = 0, penalty = 0, prior = 0;
-    for (const auto finprob : speeds) {
+
+    long long completed = 0, penalty = 0, prior = 0;
+    
+    for (auto finprob : speeds) {
         if (finprob > T) {
             break;
         }
         ++completed;
         T -= finprob;
         prior += finprob;
-        prior %= MODNUM;
         penalty += (prior);
         penalty %= MODNUM;
     }
