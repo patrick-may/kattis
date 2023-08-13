@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-
-#include <list>
 #define pb push_back
 
 using namespace std;
