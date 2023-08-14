@@ -12,6 +12,7 @@ haystack = set("abcdefghijklmnopqrstuvwxyz")
 
 def backtrack(need, index):
     if len(need) == 0:
+        # how many possible ways to combine the remaining word choices
         return 2 ** (len(words) - index)
 
     if index >= len(words):
