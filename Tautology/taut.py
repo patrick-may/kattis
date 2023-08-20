@@ -1,19 +1,31 @@
 import sys
 
-def kand(a, b):
+def K(a, b):
     return (a and b)
 
-def aor(a,b):
+def A(a,b):
     return (a or b)
 
-def nor(a):
+def N(a):
     return (not a)
 
-def cimplies(a, b):
+def C(a, b):
     return (not a or b)
 
-def equals(a, b):
+def E(a, b):
     return (a == b)
+
+def evaluateWFF(expr, vals):
+    op = expr[0] # first character will always be an operator
+
+    # not just is one
+    if op == 'N':
+        return N(evaluateWFF(expr[1:], vals))
+
+    # op \in K, A, C, E
+    # otherwise, break into two WFF 
+
+
 
 def generate_options():
     mappings = []
@@ -26,29 +38,14 @@ def generate_options():
                         mappings.append(option)
     return mappings
 
-# bruh.. ugly ass problem fr
+
 def is_taut(line):
     
     truth_vals = generate_options()
-
-    fn_map = {"K": kand, "A": aor, 'N': nor, "C": cimplies, "E": equals}
+    
     for option in truth_vals:
-        index = 0
-        while index < len(line) - 1:
-            c = line[index]
-            if c in "KCE":
-                l1, l2 = line[index + 1], line[index + 2]
-                if fn_map[c](option[l1], option[l2]):
-                    return False
-                index += 2
+         
 
-            elif c == "AN":
-                l1 = line[index + 1]
-                if fn_map[c](option[l1]):
-                    return False
-                index += 1
-                
-            index += 1
     return True
 
 for line in sys.stdin:
