@@ -1,5 +1,14 @@
+# ye idk bout this one chief
 **/debug
+
+# Rust
 **/Cargo*
 **/target
+
+# cpp stuff
 *.out
+
+# VSCode stuff
 *.vscode
+# any config things
+.*
