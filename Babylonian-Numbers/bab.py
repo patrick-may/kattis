@@ -1,4 +1,3 @@
-
 def testcase():
     def applicator(i):
         return 0 if i == "" else int(i)
