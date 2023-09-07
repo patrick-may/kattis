@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
-#include <tuple>
 #include <set>
 
 using namespace std;
@@ -14,7 +13,7 @@ void tc() {
     cin >> milk >> cats;
     
     vector<vector<int>> dists(cats, vector<int>(cats));
-    vector<tuple<int,int,int>> edges(cats * (cats - 1));
+    vector<vector<int>> edges((cats * (cats - 1)) / 2, vector<int>(3));
 
     if (debugio) {
         for (auto v : dists) {
@@ -24,7 +23,6 @@ void tc() {
             cout << endl;
         }
     }
-
     for (int i = 0; i < (cats * (cats - 1)) / 2; ++i) {
         int c1, c2, dist;
         cin >> c1 >> c2 >> dist; 
@@ -45,14 +43,22 @@ void tc() {
 
     // construct MST
     sort(edges.begin(), edges.end(), [](const auto& l, const auto& r) {
-            // TIL about tuples. Love it
-            return get<2>(l) < get<2>(r);
+            return l[2] < r[2];
             });
 
+    if (debug) {
+        cout << "Sorted Edges: \n";
+        for (auto t : edges) {
+            for (auto v : t) {
+                cout << v << " ";
+            }
+            cout << "\n";
+        }
+    }
     set<int> used;
     int mstcost = 0;
     for(const auto& edge: edges){
-        int n1 = get<0>(edge), n2 = get<1>(edge), cost = get<2>(edge);
+        int n1 = edge[0], n2 = edge[1], cost = edge[2];
         // early exit for when tree is populated
         if (used.size() == cats) {
             break;
