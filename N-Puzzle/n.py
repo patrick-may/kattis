@@ -35,8 +35,6 @@ def dist(x, y, desired):
         if curry < 3:
             to_visit.append((currx, curry + 1, dist + 1))
 
-
-
 for x, row in enumerate(check):
     for y, c in enumerate(row):
         val = dist(x, y, c)
