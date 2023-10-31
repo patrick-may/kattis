@@ -1,5 +1,12 @@
 def valid10(isbn: str) -> bool:
-    if isbn.count('X') > 0 and isbn[-1] != 'X':
+    # check that not too many hyphens
+    if len(isbn.replace("-", "")) != 10:
+        return False
+    # only last digit can be an X
+    if isbn.count('X') > 1:
+        return False
+    # make sure no extra Xs
+    if isbn.count('X') == 1 and isbn[-1] != 'X':
         return False
     # cannot begin or end with hyphens
     if isbn[0] == '-' or isbn[-1] == '-':
@@ -27,24 +34,22 @@ def valid10(isbn: str) -> bool:
 def convert13(isbn: str) -> str:
     if not valid10(isbn):
         return "invalid"
+
     soln = "978-"
     val = (9 * 1) + (7 * 3) + (8 * 1)
-    mult = 3
-    for c in isbn[:-1]:
+    for x, c in enumerate(isbn[:-1]):
         if c == '-':
             soln += '-'
             continue
         soln += c
         c = int(c)
-        val += (c * mult)
-        mult = 1 if mult == 3 else 3
+        val += (c * (3 if x % 2 == 0 else 1))
 
     # figure checksum
     soln += str(10 - (val % 10))
     return (soln)
 
-input()
-from sys import stdin
-for line in stdin:
-    print(convert13(line.strip()))
+cases = int(input())
+for _ in range(cases): 
+    print(convert13(input()))
 
